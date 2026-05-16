@@ -11,12 +11,19 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from taggit.managers import TaggableManager
+from taggit.models import GenericUUIDTaggedItemBase, TaggedItemBase
 
 from shared.models import BaseModel, SoftDeleteManager, SoftDeleteModel
 from shared.utils import estimate_reading_time, render_markdown
 
 if TYPE_CHECKING:
     pass
+
+
+class UUIDTaggedItem(GenericUUIDTaggedItemBase, TaggedItemBase):
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
 
 
 class PostStatus(models.TextChoices):
@@ -76,7 +83,7 @@ class Post(BaseModel, SoftDeleteModel):
 
     objects = PublishedPostManager()
     all_objects = models.Manager()
-    tags = TaggableManager(blank=True)
+    tags = TaggableManager(through=UUIDTaggedItem, blank=True)
 
     class Meta:
         db_table = "posts"

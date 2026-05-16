@@ -19,7 +19,7 @@ RUN uv sync --frozen --no-dev
 FROM base AS development
 RUN uv sync --frozen
 COPY . .
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["uv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 FROM base AS production
 COPY . .
