@@ -1,0 +1,17 @@
+{% load post_tags %}
+{% if posts %}
+<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5">
+  <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Trending</h3>
+  <ol class="space-y-4">
+    {% for post in posts %}
+    <li class="flex gap-3">
+      <span class="text-2xl font-bold text-gray-100 dark:text-gray-800 leading-none select-none">{{ forloop.counter }}</span>
+      <div>
+        <a href="{{ post.get_absolute_url }}" class="text-sm font-medium text-gray-800 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors leading-snug">{{ post.title|truncatewords:8 }}</a>
+        <p class="text-xs text-gray-400 mt-0.5">{{ post.view_count }} views · {{ post.reading_time|reading_time_label }}</p>
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+</div>
+{% endif %}

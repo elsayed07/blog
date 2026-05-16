@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load post_tags %}
+
+{% block title %}My Bookmarks{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Bookmarks</h1>
+
+  {% if result.items %}
+  <div class="divide-y divide-gray-100 dark:divide-gray-800">
+    {% for bookmark in result.items %}
+    <article class="py-6 first:pt-0 group">
+      <div class="flex gap-2 flex-wrap mb-2">
+        {% for tag in bookmark.post.tags.all %}<a href="{% url 'posts:list_by_tag' tag.slug %}" class="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:underline">{{ tag.name }}</a>{% endfor %}
+      </div>
+      <h2 class="text-lg font-semibold">
+        <a href="{{ bookmark.post.get_absolute_url }}" class="text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{{ bookmark.post.title }}</a>
+      </h2>
+      <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ bookmark.post.excerpt }}</p>
+      <div class="mt-2 flex items-center gap-4 text-xs text-gray-400">
+        <span>{{ bookmark.post.author.name }}</span>
+        <span>{{ bookmark.post.reading_time|reading_time_label }}</span>
+        <span>Saved {{ bookmark.created_at|date:"N j" }}</span>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-20">
+    <p class="text-gray-400">No bookmarks yet.</p>
+    <a href="{% url 'posts:list' %}" class="mt-4 inline-block text-sm font-medium text-indigo-600 hover:underline">Browse posts →</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

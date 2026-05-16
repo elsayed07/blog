@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% if query %} — {{ query }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Search</h1>
+
+  <form method="get" action="{% url 'posts:search' %}" class="mb-10">
+    <div class="flex gap-3">
+      <div class="relative flex-1">
+        <input
+          type="text"
+          name="q"
+          value="{{ query }}"
+          placeholder="Search posts by title, topic, or keyword…"
+          autofocus
+          class="w-full pl-10 pr-4 py-3 text-sm bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          hx-get="{% url 'posts:search' %}"
+          hx-trigger="keyup changed delay:400ms"
+          hx-target="#search-results"
+          hx-include="this"
+          name="q"
+        />
+        <svg class="absolute left-3.5 top-3.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </div>
+      <button type="submit" class="px-5 py-3 text-sm font-semibold bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors">Search</button>
+    </div>
+  </form>
+
+  <div id="search-results">
+    {% include "posts/partials/search_results.html" %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Authors{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-10">Authors</h1>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for profile in authors %}
+    <a href="{{ profile.get_absolute_url }}" class="group block p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl hover:border-indigo-400 dark:hover:border-indigo-600 transition-all">
+      <div class="flex items-center gap-4 mb-4">
+        {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="{{ profile.user.name }}" class="w-12 h-12 rounded-xl object-cover" />
+        {% else %}
+        <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center text-xl font-bold text-indigo-600 dark:text-indigo-400">{{ profile.user.name|first|upper }}</div>
+        {% endif %}
+        <div>
+          <p class="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{{ profile.user.name }}</p>
+          <p class="text-xs text-gray-400">@{{ profile.user.username }}</p>
+        </div>
+      </div>
+      {% if profile.bio %}<p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-3">{{ profile.bio }}</p>{% endif %}
+      <p class="text-xs text-gray-400">{{ profile.post_count }} post{{ profile.post_count|pluralize }}</p>
+    </a>
+    {% empty %}
+    <p class="text-gray-400 col-span-full text-center py-12">No authors yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
